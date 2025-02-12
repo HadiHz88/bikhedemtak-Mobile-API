@@ -89,3 +89,5 @@ ALTER TABLE `favorites` ADD FOREIGN KEY (`tasker_id`) REFERENCES `taskers` (`use
 ALTER TABLE `past_taskers` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 ALTER TABLE `past_taskers` ADD FOREIGN KEY (`tasker_id`) REFERENCES `taskers` (`user_id`) ON DELETE CASCADE;
+
+

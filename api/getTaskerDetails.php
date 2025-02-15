@@ -1,12 +1,21 @@
 <?php
 
-include '../config/database.php';
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-if (isset($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
+require_once "../config/database.php";
+require_once "../utils/functions.php";
 
-    // Get Tasker info
-    $sql = "
+try {
+    if (!isset($_GET['user_id'])) {
+        sendError("User ID not provided");
+    }
+
+    $user_id = intval($_GET['user_id']);
+
+    $stmt = $conn->prepare("
         SELECT 
             u.name, 
             u.profile_picture, 
@@ -19,32 +28,35 @@ if (isset($_GET['user_id'])) {
             taskers t ON u.user_id = t.user_id
         WHERE 
             u.user_id = ?
-    ";
+    ");
 
-    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        sendError("Database error", 500);
+    }
+
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $tasker = $result->fetch_assoc();
-
-        $taskerData = [
-            "success" => true,
-            "name" => $tasker['name'],
-            "profile_picture" => $tasker['profile_picture'],
-            "skill" => $tasker['skill'],
-            "availability_status" => $tasker['availability_status'],
-            "rating" => $tasker['rating']
-        ];
-        echo json_encode($taskerData);
-    } else {
-        echo json_encode(["success" => false, "message" => "Tasker not found"]);
+    if ($result->num_rows === 0) {
+        sendError("Tasker not found", 404);
     }
 
-    $stmt->close();
-} else {
-    echo json_encode(["success" => false, "message" => "User ID not provided"]);
-}
+    $tasker = $result->fetch_assoc();
 
-$conn->close();
+    // Create response data
+    $responseData = [
+        "name" => $tasker['name'],
+        "profile_picture" => $tasker['profile_picture'],
+        "skill" => $tasker['skill'],
+        "availability_status" => (bool)$tasker['availability_status'],
+        "rating" => floatval($tasker['rating'])
+    ];
+
+    sendSuccess($responseData);
+
+} catch (Exception $e) {
+    sendError("An error occurred: " . $e->getMessage(), 500);
+} finally {
+    closeConnections($stmt, $conn);
+}

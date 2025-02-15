@@ -1,35 +1,12 @@
 <?php
+
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 require_once "../config/database.php";
-
-// Function to validate email format
-function isValidEmail($email) {
-    return filter_var($email, FILTER_VALIDATE_EMAIL);
-}
-
-// Function to send error response
-function sendError($message, $code = 400) {
-    http_response_code($code);
-    echo json_encode([
-        "status" => "error",
-        "message" => $message
-    ]);
-    exit;
-}
-
-// Function to send success response
-function sendSuccess($data) {
-    http_response_code(200);
-    echo json_encode([
-        "status" => "success",
-        "data" => $data
-    ]);
-    exit;
-}
+require_once "../utils/functions.php";
 
 try {
     // Get the raw POST data
@@ -93,7 +70,7 @@ try {
         ];
     }
 
-    // Generate a simple token (in production, use JWT or a proper token system)
+    // Generate a simple token for authentication
     $token = bin2hex(random_bytes(32));
     $responseData['token'] = $token;
 
@@ -102,10 +79,5 @@ try {
 } catch (Exception $e) {
     sendError("An error occurred: " . $e->getMessage(), 500);
 } finally {
-    if (isset($stmt)) {
-        $stmt->close();
-    }
-    if (isset($conn)) {
-        $conn->close();
-    }
+    closeConnections($stmt, $conn);
 }

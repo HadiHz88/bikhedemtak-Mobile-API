@@ -2,30 +2,14 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 require_once "../config/database.php";
-
-// Validation functions
-function isValidEmail($email) {
-    return filter_var($email, FILTER_VALIDATE_EMAIL);
-}
-
-function isValidPassword($password) {
-    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
-    return strlen($password) >= 8
-        && preg_match('/[A-Z]/', $password)
-        && preg_match('/[a-z]/', $password)
-        && preg_match('/[0-9]/', $password);
-}
-
-function isValidPhone($phone) {
-    // Basic phone validation (can be adjusted based on your needs)
-    return preg_match('/^[+]?[0-9]{8,}$/', $phone);
-}
+require_once "../utils/functions.php"; // Include the functions file
 
 try {
     // Get the raw POST data
@@ -33,12 +17,7 @@ try {
 
     // Validate required fields
     if (!isset($data->name) || !isset($data->email) || !isset($data->password)) {
-        http_response_code(400);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Name, email, and password are required"
-        ]);
-        exit;
+        sendError("Name, email, and password are required");
     }
 
     // Clean and validate input
@@ -49,32 +28,17 @@ try {
 
     // Validate email
     if (!isValidEmail($email)) {
-        http_response_code(400);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Invalid email format"
-        ]);
-        exit;
+        sendError("Invalid email format");
     }
 
     // Validate password
     if (!isValidPassword($password)) {
-        http_response_code(400);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Password must be at least 8 characters long and contain uppercase, lowercase, and numbers"
-        ]);
-        exit;
+        sendError("Password must be at least 8 characters long and contain uppercase, lowercase, and numbers");
     }
 
     // Validate phone if provided
     if ($phone !== null && !isValidPhone($phone)) {
-        http_response_code(400);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Invalid phone number format"
-        ]);
-        exit;
+        sendError("Invalid phone number format");
     }
 
     // Check if email already exists
@@ -83,12 +47,7 @@ try {
     $stmt->execute();
 
     if ($stmt->get_result()->num_rows > 0) {
-        http_response_code(409);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Email already registered"
-        ]);
-        exit;
+        sendError("Email already registered", 409);
     }
     $stmt->close();
 
@@ -105,32 +64,19 @@ try {
         // Generate token (in production, use JWT or proper token system)
         $token = bin2hex(random_bytes(32));
 
-        http_response_code(201);
-        echo json_encode([
-            "status" => "success",
-            "data" => [
-                "user_id" => $userId,
-                "name" => $name,
-                "email" => $email,
-                "phone" => $phone,
-                "token" => $token
-            ]
-        ]);
+        sendSuccess([
+            "user_id" => $userId,
+            "name" => $name,
+            "email" => $email,
+            "phone" => $phone,
+            "token" => $token
+        ], 201); // 201 Created status code
     } else {
         throw new Exception("Failed to create user");
     }
 
 } catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode([
-        "status" => "error",
-        "message" => "Registration failed: " . $e->getMessage()
-    ]);
+    sendError("Registration failed: " . $e->getMessage(), 500);
 } finally {
-    if (isset($stmt)) {
-        $stmt->close();
-    }
-    if (isset($conn)) {
-        $conn->close();
-    }
+    closeConnections($stmt, $conn); // Use the reusable function to close connections
 }

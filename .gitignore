@@ -6,7 +6,6 @@
 Thumbs.db
 
 # Ignore environment/config files (store sensitive info locally)
-config/database.php
 .env
 
 # Ignore vendor directory if using Composer

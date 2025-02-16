@@ -15,6 +15,7 @@ try {
 
     $tasker_id = intval($_GET['tasker_id']);
 
+    // First, get the basic tasker details
     $stmt = $conn->prepare("
         SELECT 
             u.name, 
@@ -22,7 +23,8 @@ try {
             t.skill, 
             t.availability_status, 
             t.rating,
-            t.description
+            t.description,
+            t.hourly_rate
         FROM 
             users u
         INNER JOIN 
@@ -45,6 +47,26 @@ try {
 
     $tasker = $result->fetch_assoc();
 
+    // Now get the count of completed tasks
+    $taskStmt = $conn->prepare("
+        SELECT 
+            COUNT(*) as completed_tasks_count
+        FROM 
+            tasks
+        WHERE 
+            tasker_id = ? 
+            AND status = 'completed'
+    ");
+
+    if (!$taskStmt) {
+        sendError("Database error while counting tasks", 500);
+    }
+
+    $taskStmt->bind_param("i", $tasker_id);
+    $taskStmt->execute();
+    $taskResult = $taskStmt->get_result();
+    $taskCount = $taskResult->fetch_assoc();
+
     // Create response data
     $responseData = [
         "name" => $tasker['name'],
@@ -52,7 +74,9 @@ try {
         "skill" => $tasker['skill'],
         "availability_status" => (bool)$tasker['availability_status'],
         "rating" => floatval($tasker['rating']),
-        "description" => $tasker['description']
+        "description" => $tasker['description'],
+        "hourly_rate" => intval($tasker['hourly_rate']),
+        "completed_tasks_count" => intval($taskCount['completed_tasks_count'])
     ];
 
     sendSuccess($responseData);
@@ -60,5 +84,14 @@ try {
 } catch (Exception $e) {
     sendError("An error occurred: " . $e->getMessage(), 500);
 } finally {
-    closeConnections($stmt, $conn);
+    // Close both statements
+    if (isset($stmt)) {
+        $stmt->close();
+    }
+    if (isset($taskStmt)) {
+        $taskStmt->close();
+    }
+    if (isset($conn)) {
+        $conn->close();
+    }
 }

@@ -1,7 +1,10 @@
 <?php
 
 // Function to send a success response
-function sendSuccess($data, $code = 200) {
+use JetBrains\PhpStorm\NoReturn;
+
+#[NoReturn] function sendSuccess($data, $code = 200): void
+{
     http_response_code($code);
     echo json_encode([
         "status" => "success",
@@ -11,7 +14,8 @@ function sendSuccess($data, $code = 200) {
 }
 
 // Function to send an error response
-function sendError($message, $code = 400) {
+#[NoReturn] function sendError($message, $code = 400): void
+{
     http_response_code($code);
     echo json_encode([
         "status" => "error",
@@ -21,7 +25,8 @@ function sendError($message, $code = 400) {
 }
 
 // Function to close database connections and statements
-function closeConnections($stmt = null, $conn = null) {
+function closeConnections($stmt = null, $conn = null): void
+{
     if ($stmt) {
         $stmt->close();
     }
@@ -31,12 +36,14 @@ function closeConnections($stmt = null, $conn = null) {
 }
 
 // Function to validate email format
-function isValidEmail($email) {
+function isValidEmail($email)
+{
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
 // Function to validate password
-function isValidPassword($password) {
+function isValidPassword($password): bool
+{
     // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
     return strlen($password) >= 8
         && preg_match('/[A-Z]/', $password)

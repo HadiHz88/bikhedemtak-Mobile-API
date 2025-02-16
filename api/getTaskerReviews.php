@@ -2,8 +2,8 @@
 
 include '../config/database.php';
 
-if (isset($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
+if (isset($_GET['tasker_id'])) {
+    $tasker_id = $_GET['tasker_id'];
 
     $sql = "
     SELECT 
@@ -23,7 +23,7 @@ if (isset($_GET['user_id'])) {
     ";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("i", $tasker_id);
     $stmt->execute();
     $result = $stmt->get_result();
 

@@ -9,11 +9,11 @@ require_once "../config/database.php";
 require_once "../utils/functions.php";
 
 try {
-    if (!isset($_GET['user_id'])) {
-        sendError("User ID not provided");
+    if (!isset($_GET['tasker_id'])) {
+        sendError("Tasker ID not provided");
     }
 
-    $user_id = intval($_GET['user_id']);
+    $tasker_id = intval($_GET['tasker_id']);
 
     $stmt = $conn->prepare("
         SELECT 
@@ -21,7 +21,8 @@ try {
             u.profile_picture, 
             t.skill, 
             t.availability_status, 
-            t.rating
+            t.rating,
+            t.description
         FROM 
             users u
         INNER JOIN 
@@ -34,7 +35,7 @@ try {
         sendError("Database error", 500);
     }
 
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("i", $tasker_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -50,7 +51,8 @@ try {
         "profile_picture" => $tasker['profile_picture'],
         "skill" => $tasker['skill'],
         "availability_status" => (bool)$tasker['availability_status'],
-        "rating" => floatval($tasker['rating'])
+        "rating" => floatval($tasker['rating']),
+        "description" => $tasker['description']
     ];
 
     sendSuccess($responseData);

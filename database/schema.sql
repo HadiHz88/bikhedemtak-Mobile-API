@@ -15,8 +15,8 @@ CREATE TABLE `taskers`
     `skill`               VARCHAR(255),
     `availability_status` BOOLEAN       DEFAULT true,
     `rating`              DECIMAL(3, 2) DEFAULT 0,
-    'description'         TEXT,
-    'hourly_rate'         INT DEFAULT 0
+    `description`        TEXT,
+    `hourly_rate`         INT DEFAULT 0
 );
 
 CREATE TABLE `categories`

@@ -32,8 +32,7 @@ CREATE TABLE `tasks`
     `tasker_id`        INT  NOT NULL,
     `category_id`      INT,
     `task_description` TEXT NOT NULL,
-    `status`           ENUM ('pending', 'in_progress', 'completed') DEFAULT 'pending',
-    `created_at`       TIMESTAMP                                    DEFAULT (CURRENT_TIMESTAMP)
+    `status`           ENUM ('pending', 'in_progress', 'completed') DEFAULT 'pending'
 );
 
 CREATE TABLE `bookings`
@@ -42,7 +41,7 @@ CREATE TABLE `bookings`
     `task_id`      INT NOT NULL,
     `requester_id` INT NOT NULL,
     `tasker_id`    INT NOT NULL,
-    `booking_date` TIMESTAMP                                               DEFAULT (CURRENT_TIMESTAMP),
+    `booking_date` TIMESTAMP                                               NOT NULL,
     `status`       ENUM ('pending', 'confirmed', 'completed', 'cancelled') DEFAULT 'pending'
 );
 

@@ -19,7 +19,8 @@ try {
     $stmt = $conn->prepare("
         SELECT 
             u.name, 
-            u.profile_picture, 
+            u.profile_picture,
+            u.phone,
             t.skill, 
             t.availability_status, 
             t.rating,
@@ -72,6 +73,7 @@ try {
         "name" => $tasker['name'],
         "profile_picture" => $tasker['profile_picture'],
         "skill" => $tasker['skill'],
+        "phone" => $tasker['phone'],
         "availability_status" => (bool)$tasker['availability_status'],
         "rating" => floatval($tasker['rating']),
         "description" => $tasker['description'],

@@ -25,7 +25,7 @@ error_log("Received data: " . print_r($data, true));
 
 // Validate required fields
 if (!isset($data['task_id']) || !isset($data['reviewer_id']) ||
-    !isset($data['tasker_id']) || !isset($data['rating'])) {
+    !isset($data['tasker_id']) || !isset($data['rating']) || !isset($data['review_content'])) {
     sendError("Missing required fields", 400);
 }
 
@@ -53,7 +53,7 @@ try {
     $task_id = intval($data['task_id']);
     $reviewer_id = intval($data['reviewer_id']);
     $tasker_id = intval($data['tasker_id']);
-    $review_content = isset($data['review_content']) ? $data['review_content'] : null;
+    $review_content = $data['review_content'];
 
     $stmt->bind_param("iiiis", $task_id, $reviewer_id, $tasker_id, $rating, $review_content);
     if (!$stmt->execute()) {

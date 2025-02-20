@@ -7,8 +7,8 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 include '../config/database.php';
 
-if (isset($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
+if (isset($_GET['requester_id'])) {
+    $requester_id = $_GET['requester_id'];
 
     // Updated SQL query to join tables and fetch the required details
     $sql = "
@@ -26,11 +26,11 @@ if (isset($_GET['user_id'])) {
     INNER JOIN 
         bookings ON tasks.task_id = bookings.task_id
     WHERE 
-        tasks.requester_id = ? AND tasks.status = 'scheduled' OR tasks.status = 'pending';
+        tasks.requester_id = ? AND tasks.status = 'scheduled';
     ";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("i", $requester_id);
     $stmt->execute();
     $result = $stmt->get_result();
 

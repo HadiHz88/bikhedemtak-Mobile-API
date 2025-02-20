@@ -113,4 +113,3 @@ ALTER TABLE `past_taskers`
 ALTER TABLE `past_taskers`
     ADD FOREIGN KEY (`tasker_id`) REFERENCES `taskers` (`user_id`) ON DELETE CASCADE;
 
-

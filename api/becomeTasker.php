@@ -13,14 +13,15 @@ try {
     $data = json_decode(file_get_contents("php://input"));
 
     // Validate required fields
-    if (!isset($data->user_id) || !isset($data->skill)) {
-        sendError("User ID and skill are required");
+    if (!isset($data->user_id) || !isset($data->skill) || !isset($data->hourly_rate)) {
+        sendError("User ID, skill and Hourly Rate are required");
     }
 
     // Clean and validate input
     $user_id = intval($data->user_id);
     $skill = trim($data->skill);
-    $availability_status = isset($data->availability_status) ? (bool)$data->availability_status : true;
+    $availability_status = !isset($data->availability_status) || (bool)$data->availability_status;
+    $hourly_rate = floatval($data->hourly_rate);
 
     // Check if the user already exists in the taskers table
     $stmt = $conn->prepare("SELECT user_id FROM taskers WHERE user_id = ?");
@@ -34,14 +35,15 @@ try {
     $stmt->close();
 
     // Insert the user into the taskers table
-    $stmt = $conn->prepare("INSERT INTO taskers (user_id, skill, availability_status) VALUES (?, ?, ?)");
-    $stmt->bind_param("iss", $user_id, $skill, $availability_status);
+    $stmt = $conn->prepare("INSERT INTO taskers (user_id, skill, availability_status, hourly_rate) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("issi", $user_id, $skill, $availability_status, $hourly_rate);
 
     if ($stmt->execute()) {
         sendSuccess([
             "user_id" => $user_id,
             "skill" => $skill,
             "availability_status" => $availability_status,
+            "hourly_rate" => $hourly_rate,
             "message" => "User successfully registered as a Tasker"
         ], 201); // 201 Created status code
     } else {

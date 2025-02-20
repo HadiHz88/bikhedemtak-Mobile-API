@@ -68,6 +68,7 @@ try {
             "user_id" => $userId,
             "name" => $name,
             "email" => $email,
+            "password" => $password,
             "phone" => $phone,
             "token" => $token
         ], 201); // 201 Created status code

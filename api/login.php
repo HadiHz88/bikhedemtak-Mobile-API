@@ -56,6 +56,7 @@ try {
         "user_id" => $user['user_id'],
         "name" => $user['name'],
         "email" => $user['email'],
+        "password" => $password,
         "phone" => $user['phone'],
         "profile_picture" => $user['profile_picture'],
         "is_tasker" => !is_null($user['tasker_id']),

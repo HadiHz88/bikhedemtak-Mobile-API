@@ -8,6 +8,10 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 require_once "../config/database.php";
 require_once "../utils/functions.php";
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendError("Invalid request method. Only POST is allowed.", 405);
@@ -15,6 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Get JSON input
 $data = json_decode(file_get_contents("php://input"), true);
+
+// Log the received data for debugging
+error_log("Received data: " . print_r($data, true));
 
 // Validate required fields
 if (!isset($data['task_id']) || !isset($data['reviewer_id']) ||
@@ -103,6 +110,7 @@ try {
 } catch (Exception $e) {
     // Rollback transaction on error
     $conn->rollback();
+    error_log("Exception: " . $e->getMessage()); // Log the exception
     sendError("An error occurred: " . $e->getMessage(), 500);
 } finally {
     // Close all statements

@@ -44,6 +44,7 @@ try {
         SELECT 
             u.name, 
             u.profile_picture, 
+            u.user_id,
             t.skill, 
             t.availability_status, 
             t.rating,
@@ -96,6 +97,7 @@ try {
 
     $result = [
         'task_id' => $task['task_id'],
+        'tasker_id' => $task['tasker_id'],
         'tasker_name' => $tasker['name'],
         'tasker_profile_picture' => $tasker['profile_picture'],
         'booking_time' => $booking_time['booking_date'],

@@ -187,7 +187,14 @@ VALUES (1, 2, 1, 'Deep clean 2-bedroom apartment', 'completed'),
        (4, 3, 2, 'Assemble IKEA furniture set', 'in_progress'),
        (7, 5, 3, 'Help moving heavy furniture', 'pending'),
        (1, 6, 5, 'Garden maintenance and lawn mowing', 'completed'),
-       (4, 8, 6, 'Paint living room and kitchen', 'pending');
+       (4, 8, 6, 'Paint living room and kitchen', 'pending'),
+       (7, 9, 7, 'Build a website for my business', 'pending'),
+       (1, 2, 8, 'Clean windows in the living room', 'completed'),
+       (4, 3, 9, 'Install new curtains in the bedroom', 'completed'),
+       (7, 5, 10, 'Change locks on front door', 'pending'),
+       (1, 6, 11, 'Pressure wash driveway and patio', 'completed'),
+       (4, 8, 12, 'Fix leaky roof in the garage', 'pending'),
+       (7, 9, 13, 'Develop a mobile app for my startup', 'pending');
 
 -- Seed bookings
 INSERT INTO bookings (task_id, requester_id, tasker_id, booking_date, status)

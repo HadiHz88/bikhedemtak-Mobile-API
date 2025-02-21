@@ -26,7 +26,7 @@ if (isset($_GET['requester_id'])) {
     INNER JOIN 
         bookings ON tasks.task_id = bookings.task_id
     WHERE 
-        tasks.requester_id = ? AND tasks.status = 'scheduled';
+        tasks.requester_id = ? AND tasks.status = 'pending';
     ";
 
     $stmt = $conn->prepare($sql);

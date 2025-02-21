@@ -5,12 +5,6 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-// Handle preflight OPTIONS request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
-
 require_once "../config/database.php";
 require_once "../utils/functions.php";
 
@@ -115,7 +109,7 @@ try {
         $stmt = $conn->prepare("
             INSERT INTO bookings 
                 (task_id, requester_id, tasker_id, status) 
-            VALUES (?, ?, ?, 'pending')
+            VALUES (?, ?, ?, 'scheduler')
         ");
         $stmt->bind_param("iii", $task_id, $requester_id, $tasker_id);
     }

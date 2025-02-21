@@ -27,7 +27,7 @@ if (isset($_GET['tasker_id'])) {
         r.tasker_id = ?
     ORDER BY
         r.created_at DESC
-    LIMIT 4;
+    LIMIT 3;
     ";
 
     $stmt = $conn->prepare($sql);

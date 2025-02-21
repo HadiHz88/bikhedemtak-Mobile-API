@@ -1,19 +1,113 @@
-USE bikhedemtak_mb;
-
-INSERT INTO categories (category_name) VALUES ('Web Development');
-INSERT INTO categories (category_name) VALUES ('Mobile Development');
-INSERT INTO categories (category_name) VALUES ('Plumbing');
-INSERT INTO categories (category_name) VALUES ('Electrical');
-INSERT INTO categories (category_name) VALUES ('Carpentry');
-INSERT INTO categories (category_name) VALUES ('Painting');
-INSERT INTO categories (category_name) VALUES ('Cleaning');
-INSERT INTO categories (category_name) VALUES ('Gardening');
-INSERT INTO categories (category_name) VALUES ('Cooking');
-INSERT INTO categories (category_name) VALUES ('Babysitting');
-INSERT INTO categories (category_name) VALUES ('Pet Care');
-INSERT INTO categories (category_name) VALUES ('Tutoring');
-INSERT INTO categories (category_name) VALUES ('Fitness');
-INSERT INTO categories (category_name) VALUES ('Photography');
-INSERT INTO categories (category_name) VALUES ('Music');
-INSERT INTO categories (category_name) VALUES ('Dance');
-INSERT INTO categories (category_name) VALUES ('Event Planning');
+-- Seed categories
+INSERT INTO categories (category_name)
+VALUES
+#     General Home Services
+('Window Cleaning'),
+('Roof Repair'),
+('Pest Control'),
+('Deep Cleaning'),
+('Home Renovation'),
+('Pool Maintenance'),
+('Garage Cleaning'),
+('Curtain Installation'),
+('Pressure Washing'),
+('Locksmith Services'),
+# Technology Services
+('IT Support'),
+('Computer Repair'),
+('Smart Home Installation'),
+('Network Setup'),
+('Software Installation'),
+('Data Recovery'),
+('Website Development'),
+('App Development'),
+('Graphic Design'),
+('Digital Marketing'),
+# Personal Care and Beauty
+('Hair Styling'),
+('Makeup Artist'),
+('Personal Training'),
+('Massage Therapy'),
+('Nail Care'),
+('Skincare Services'),
+('Tattoo Artist'),
+('Barber Services'),
+('Personal Shopper'),
+('Wardrobe Consultation'),
+# Automotive Services
+('Car Wash'),
+('Oil Change'),
+('Tire Replacement'),
+('Brake Repair'),
+('Car Detailing'),
+('Battery Replacement'),
+('Roadside Assistance'),
+('Car Wrapping'),
+('Paint Touch-Ups'),
+('Engine Repair'),
+# Childcare & Education
+('Babysitting'),
+('Tutoring'),
+('Homework Help'),
+('Music Lessons'),
+('Language Classes'),
+('Art Classes'),
+('Swimming Lessons'),
+('Child Safety Training'),
+('Dance Classes'),
+('Test Preparation'),
+# Food Services
+('Catering Services'),
+('Meal Preparation'),
+('Personal Chef'),
+('Bakery Services'),
+('Event Bartending'),
+('Wine Tasting'),
+('Grocery Shopping'),
+('Special Diet Planning'),
+('Snack Delivery'),
+('Food Truck Service'),
+# Event Planning & Entertainment
+('Event Planning'),
+('Wedding Planning'),
+('DJ Services'),
+('Photography'),
+('Videography'),
+('Balloon Decoration'),
+('Floral Arrangement'),
+('Party Rental Services'),
+('Photo Booth Setup'),
+('Karaoke Services'),
+# Fitness & Health
+('Yoga Instruction'),
+('Pilates Classes'),
+('Nutritionist'),
+('Weight Loss Coaching'),
+('Wellness Coaching'),
+('Rehabilitation Services'),
+('Chiropractor'),
+('Martial Arts Classes'),
+('Meditation Sessions'),
+('Group Fitness Classes'),
+# Pet Services
+('Dog Walking'),
+('Pet Grooming'),
+('Pet Sitting'),
+('Dog Training'),
+('Veterinary Services'),
+('Pet Photography'),
+('Pet Boarding'),
+('Pet Adoption'),
+('Pet Taxi'),
+('Pet Behavioral Therapy'),
+# Miscellaneous
+('Sewing & Alterations'),
+('Laundry Services'),
+('Furniture Restoration'),
+('Interior Design'),
+('Travel Planning'),
+('Virtual Assistance'),
+('Business Consulting'),
+('Courier Services'),
+('Translation Services'),
+('Public Speaking Training');
